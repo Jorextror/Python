@@ -1,7 +1,7 @@
 import random
 x = 10
 y = 10
-lletres="ABCDEFGHIJ"
+index="ABCDEFGHIJ"
 flota = [5,4,4,3,3,3,2,2]
 acabada=0
 
@@ -14,9 +14,9 @@ def creaTauler():
         m.append(fila)
     return m
 
-def imprimeixTauler(m,dev=True):
+def imprimeixTauler(m,dev=False):
     print(" ",end=" ")  
-    for el in lletres:
+    for el in index:
         for el2 in el:
             print(el2,end=' ')
     print()
@@ -31,8 +31,8 @@ def imprimeixTauler(m,dev=True):
         print()
 
 def tradueixIndex(f,c):
-    for i in range(len(lletres)):
-        if lletres[i]==c:
+    for i in range(len(index)):
+        if index[i]==c:
             return int(f),int(i)
 
 def aigua(tauler,fila,columna):
@@ -111,7 +111,7 @@ def colocaFlota(m,flota):
             valit=False
             while not valit:
                 f=random.randint(0,9)
-                c=random.choice(lletres)
+                c=random.choice(index)
                 f,c=tradueixIndex(f,c)
                 if aigua(m,f,c):
                     valit=colocaVaixellHoritzontal(m,f,c,el)
@@ -120,7 +120,7 @@ def colocaFlota(m,flota):
             valit=False
             while not valit:
                 f=random.randint(0,9)
-                c=random.choice(lletres)
+                c=random.choice(index)
                 f,c=tradueixIndex(f,c)
                 if aigua(m,f,c):
                     valit=colocaVaixellVertical(m,f,c,el)
@@ -152,7 +152,6 @@ def trobaVaixellH(m,x,y):
     inici=y
     fi=len(m[x])
     for i in range(inici,fi):
-        print(i,"/",fi)
         if m[x][i][1]=="@" or m[x][i][1]=="X":
             mida+=1
         elif m[x][i][1]=="~":
@@ -220,6 +219,7 @@ def tocatIEnfonsat(m,f,c):
         else:
             return False
 
+print("\n  Guerra de Vaixells\n")
 m=creaTauler()
 colocaFlota(m,flota)
 fiPartida=False
@@ -232,4 +232,4 @@ while fiPartida is not True:
     if acabada == len(flota):
         fiPartida=True
 imprimeixTauler(m)
-print(8*"$  "+"\n"+"\t Enorabuena! "+"\n"+8*"$  ")
+print(14*"W "+"\n"+"\t Enorabuena! "+"\n"+14*"W ")
