@@ -1,0 +1,13 @@
+Algoritmo sin_titulo
+	Definir letra Como Caracter
+	
+	Escribir "una letra"
+	Leer letra
+	may = Mayusculas(letra)
+	
+	Segun letra hacer
+			"a", "e", "i", "o", "u" : Escribir "és una vocal"
+	FinSegun
+	
+FinAlgoritmo
+//jordi oliveda
