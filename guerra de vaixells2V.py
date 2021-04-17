@@ -1,6 +1,7 @@
 import random
 #Constants
 x = 10
+
 y = 10
 lletres=["A","B","C","D","E","F","G","H","I","J"]
 flota = [5,4,4,3,3,3,2,2]

@@ -1,8 +1,9 @@
 import random
 x = 10
 y = 10
-lletres=" ABCDEFGHIJ"
+lletres="ABCDEFGHIJ"
 flota = [5,4,4,3,3,3,2,2]
+acabada=0
 
 def creaTauler():
     m=[]
@@ -13,47 +14,48 @@ def creaTauler():
         m.append(fila)
     return m
 
-def imprimeixTauler(m,dev=False):
-    print("  ",end=" ")  
-    for el in lletres):
-        print(lletres[i],end=" ")
+def imprimeixTauler(m,dev=True):
+    print(" ",end=" ")  
+    for el in lletres:
+        for el2 in el:
+            print(el2,end=' ')
     print()
 
-    for j in range(len(m)):
-        print(j,end=" ")
-        for k in range(len(m[0])):
-            if m[j][k][0] == False and not dev:
-                print("·",end=" ")
+    for i in range(len(m)):
+        print(i,end=' ')
+        for j in range(len(m[0])):
+            if m[i][j][0]== False and not dev:
+                print("·",end=' ')
             else:
-                print(m[j][k][1],end=" ")   
-        print() 
+                print(m[i][j][1],end=' ')
+        print()
 
 def tradueixIndex(f,c):
     for i in range(len(lletres)):
         if lletres[i]==c:
             return int(f),int(i)
 
-def aigua(m,f,c):
-        return m[f][c][1]=="~"
+def aigua(tauler,fila,columna):
+    return tauler[fila][columna][1]=="~"
 
 def comprovaAreaH(m,f,c,mida):
-    principi=c
-    final=mida
-    voltes=3
+    inici=c
+    fi=mida
+    cops=3
     if c+mida>10:
         return False
     if c+mida<=9:
-        final=mida+1
+        fi=mida+1
     else:
-        final=mida
+        fi=mida
     if f!=0:
         f-=1
     else:
-        voltes=2
+        cops=2
     if c!=0:
-        principi=c-1
-    for i in range(voltes):
-        for j in range(principi,c+final):
+        inici=c-1
+    for i in range(cops):
+        for j in range(inici,c+fi):
             if m[f][j][1]!="~":
                 return False
         f+=1
@@ -61,10 +63,10 @@ def comprovaAreaH(m,f,c,mida):
             return True
     return True
 
-def colocaVaixellHoritzontal(tauler,f,c,mida):
-    if comprovaAreaH(tauler,f,c,mida):
+def colocaVaixellHoritzontal(m,f,c,mida):
+    if comprovaAreaH(m,f,c,mida):
       for i in range(c,c+mida):
-          tauler[f][i][1]="@"  
+          m[f][i][1]="@"  
     else:
         return False
     return True
@@ -73,82 +75,73 @@ def comprovaAreaV(m,f,c,mida):
     if f+mida>9:
         return False
     if c!=0:
-        voltesP=c-1
+        iniciV=c-1
     else:
-        voltesP=c
-    if voltesP+2<=9:
-        voltesF=c+2
+        iniciV=c
+    if iniciV+2<=9:
+        fiV=c+2
     else:
-        voltesF=c+1
+        fiV=c+1
     if f!=0:
-        principi=f-1
+        inici=f-1
     else:
-        principi=f
+        inici=f
     if f+mida<=9:
-        final=f+mida+1
+        fi=f+mida+1
     else:
-        final=f+mida
-    for i in range(principi,final):
-        for j in range(voltesP,voltesF):
+        fi=f+mida
+    for i in range(inici,fi):
+        for j in range(iniciV,fiV):
             if m[i][j][1]!="~":
                 return False
     return True
 
-def colocaVaixellVertical(tauler,f,c,mida):
-    if comprovaAreaV(tauler,f,c,mida):
+def colocaVaixellVertical(m,f,c,mida):
+    if comprovaAreaV(m,f,c,mida):
       for i in range(f,f+mida):
-          tauler[i][c][1]="@"  
+          m[i][c][1]="@"  
     else:
         return False
     return True
 
-
 def colocaFlota(m,flota):
     for el in flota:
-        VvsH=random.randint(0,1)
-        i=0
-        if VvsH==1 :
-            acabat=False
-            while not acabat:
-                i+=1
+        orientacio=random.randint(0,1)
+        if orientacio==1 :
+            valit=False
+            while not valit:
                 f=random.randint(0,9)
                 c=random.choice(lletres)
-                T=tradueixIndex(f,c)
-                f,c=T
+                f,c=tradueixIndex(f,c)
                 if aigua(m,f,c):
-                    acabat=colocaVaixellHoritzontal(m,f,c,el)
+                    valit=colocaVaixellHoritzontal(m,f,c,el)
         
-        elif VvsH==0:
-            acabat=False
-            while not acabat:
+        elif orientacio==0:
+            valit=False
+            while not valit:
                 f=random.randint(0,9)
                 c=random.choice(lletres)
-                T=tradueixIndex(f,c)
-                f,c=T
+                f,c=tradueixIndex(f,c)
                 if aigua(m,f,c):
-                    acabat=colocaVaixellVertical(m,f,c,el)
+                    valit=colocaVaixellVertical(m,f,c,el)
 
 def tret(m,f,c):
     m[f][c][0]=True
     if aigua(m,f,c):
-        imprimir=("~  "*6)+"\n"+"     AIGUA    "+"\n"+("~  "*6)    
+        print(8*"~ ","\n     AIGUA    \n"+8*"~ ")    
     else:
-        if  m[f][c][1]=="X":
-            imprimir="Aquesta posició ja ha estat elegida"
-        elif m[f][c][1]=="#":
-            imprimir="Aquest vaixell ja ha estat enfonsat"
+        m[f][c][1]="X"
+        if tocatIEnfonsat(m,f,c):
+            global acabada
+            acabada+=1
+            print(14*"= ","\n    TOCAT I ENFONSAT   \n"+14*"= ")
         else:
-            m[f][c][1]="X"
-            if tocatIEnfonsat(m,f,c):
-                imprimir=("=  "*6)+"\n"+"     ENFONSAT    "+"\n"+("=  "*6)
-            else:
-                imprimir=("-  "*6)+"\n"+"     TOCAT   "+"\n"+("-  "*6)
-    print(imprimir)
+            print(8*"- ","\n     TOCAT   \n"+8*"- ")
 
 def troba1acasellaH(m,x,y):
-    principi=y
-    final=-1
-    for i in range(principi,final,-1):
+    inici=y
+    fi=-1
+    for i in range(inici,fi,-1):
         if m[x][i][1]=="~":
             return x,i+1
         elif i==0:
@@ -156,23 +149,23 @@ def troba1acasellaH(m,x,y):
 
 def trobaVaixellH(m,x,y):
     mida=0
-    principi=y
-    final=len(m[x])
-    for i in range(principi,final):
-        print(i,"/",final)
+    inici=y
+    fi=len(m[x])
+    for i in range(inici,fi):
+        print(i,"/",fi)
         if m[x][i][1]=="@" or m[x][i][1]=="X":
             mida+=1
         elif m[x][i][1]=="~":
-            break
-        elif i==final:
+            return x,y,mida
+        elif i==fi:
             mida+=1
-            break
+            return x,y,mida
     return x,y,mida
 
 def troba1acasellaV(m,x,y):
-    principi=x
-    final=-1
-    for i in range(principi,final,-1):
+    inici=x
+    fi=-1
+    for i in range(inici,fi,-1):
         if m[i][y][1]=="~":
             return i+1,y
         elif i==0:
@@ -180,75 +173,63 @@ def troba1acasellaV(m,x,y):
 
 def trobaVaixellV(m,x,y):
     mida=0
-    principi=x
-    final=len(m[x])
-    for i in range(principi,final):
-        if m[i][y][1]=="@" or m[i][y][1]=="X" :
+    inici=x
+    fi=len(m[x])
+    for i in range(inici,fi):
+        if m[i][y][1]=="@" or m[i][y][1]=="X":
             mida+=1
         elif m[i][y][1]=="~":
-            break
-        elif i==final:
+            return x,y,mida
+        elif i==fi:
             mida+=1
-            break
+            return x,y,mida
     return x,y,mida
 
-
-def orientacio(m,f,c):
-    if c==0 and not aigua(m,f,c+1):
-        return True
-    elif c==9 and not aigua(m,f,c-1):
-        return True
-    elif (c!=0 and c!=9) and (not aigua(m,f,c-1) or not aigua(m,f,c+1)):
-        return True
-    return False
-        
 def tocatIEnfonsat(m,f,c):
-    tocats=0
-    if orientacio(m,f,c):
+    impacte=0
+    orientacio= False
+    if c==0 and not aigua(m,f,c+1):
+        orientacio = True
+    elif c==9 and not aigua(m,f,c-1):
+        orientacio = True
+    elif (c!=0 and c!=9) and (not aigua(m,f,c-1) or not aigua(m,f,c+1)):
+        orientacio = True
+
+    if orientacio:
         x,y=troba1acasellaH(m,f,c)
-        vaixell=trobaVaixellH(m,x,y)
-        for i in range (vaixell[1],(vaixell[1]+vaixell[2])):
-            print(m[x][i][1])
+        fila,columna,mida=trobaVaixellH(m,x,y)
+        for i in range(columna,(columna+mida)):
             if m[x][i][1]=="X":
-                tocats+=1
-        if tocats==vaixell[2]:
-            for i in range (vaixell[1],(vaixell[1]+vaixell[2])):
+                impacte+=1
+        if impacte==mida:
+            for i in range (columna,(columna+mida)):
                 m[x][i][1]="#"
             return True
         else:
             return False
     else:
         x,y=troba1acasellaV(m,f,c)
-        vaixell=trobaVaixellV(m,x,y)
-        for i in range (vaixell[0],(vaixell[0]+vaixell[2])):
+        fila,columna,mida=trobaVaixellV(m,x,y)
+        for i in range(fila,(fila+mida)):
             if m[i][y][1]=="X":
-                tocats+=1
-        if tocats==vaixell[2]:
-            for i in range (vaixell[0],(vaixell[0]+vaixell[2])):
+                impacte+=1
+        if impacte==mida:
+            for i in range(fila,(fila+mida)):
                 m[i][y][1]="#"
             return True
         else:
             return False
 
-def partidaAcabada(m):
-    Quantitat=0
-    for fila in m:
-        for el in fila:
-            if el[1]=="#":
-                Quantitat+=1
-    return Quantitat==sum(flota)
-
-
 m=creaTauler()
 colocaFlota(m,flota)
-while partidaAcabada(m) is not True:
+fiPartida=False
+while fiPartida is not True:
     imprimeixTauler(m)
-    print("Coordenades del tret")
-    f=input("Fila: ")
-    c=input("Columna: ")
-    T=tradueixIndex(f,c)
-    f,c=T
+    f=input("Fila (0-9): ")
+    c=input("Columna (A-J): ")
+    f,c=tradueixIndex(f,c)
     tret(m,f,c)
+    if acabada == len(flota):
+        fiPartida=True
 imprimeixTauler(m)
-imprimir=("$  "*6)+"\n"+"\tGOOD ENDING \n YOU WON    "+"\n"+("$  "*6)    
-print(imprimir)
+print(8*"$  "+"\n"+"\t Enorabuena! "+"\n"+8*"$  ")
