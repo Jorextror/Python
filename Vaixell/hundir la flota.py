@@ -1,10 +1,8 @@
 import random
-#Constants
 x = 10
 y = 10
-lletres=["A","B","C","D","E","F","G","H","I","J"]
+lletres=" ABCDEFGHIJ"
 flota = [5,4,4,3,3,3,2,2]
-
 
 def creaTauler():
     m=[]
@@ -15,20 +13,19 @@ def creaTauler():
         m.append(fila)
     return m
 
-def imprimeixTauler(m,dev=True):
-    s= " "
-    print("  ",end="")  
-    for i in range(len(m)):
-        print(lletres[i],end=s)
+def imprimeixTauler(m,dev=False):
+    print("  ",end=" ")  
+    for el in lletres):
+        print(lletres[i],end=" ")
     print()
 
     for j in range(len(m)):
-        print(j,end=s)
+        print(j,end=" ")
         for k in range(len(m[0])):
             if m[j][k][0] == False and not dev:
-                print("·",end=s)
+                print("·",end=" ")
             else:
-                print(m[j][k][1],end=s)   
+                print(m[j][k][1],end=" ")   
         print() 
 
 def tradueixIndex(f,c):
@@ -136,11 +133,16 @@ def tret(m,f,c):
     if aigua(m,f,c):
         imprimir=("~  "*6)+"\n"+"     AIGUA    "+"\n"+("~  "*6)    
     else:
-        m[f][c][1]="X"
-        if tocatIEnfonsat(m,f,c):
-            imprimir=("=  "*6)+"\n"+"     ENFONSAT    "+"\n"+("=  "*6)
+        if  m[f][c][1]=="X":
+            imprimir="Aquesta posició ja ha estat elegida"
+        elif m[f][c][1]=="#":
+            imprimir="Aquest vaixell ja ha estat enfonsat"
         else:
-            imprimir=("-  "*6)+"\n"+"     TOCAT   "+"\n"+("-  "*6)
+            m[f][c][1]="X"
+            if tocatIEnfonsat(m,f,c):
+                imprimir=("=  "*6)+"\n"+"     ENFONSAT    "+"\n"+("=  "*6)
+            else:
+                imprimir=("-  "*6)+"\n"+"     TOCAT   "+"\n"+("-  "*6)
     print(imprimir)
 
 def troba1acasellaH(m,x,y):
@@ -157,11 +159,15 @@ def trobaVaixellH(m,x,y):
     principi=y
     final=len(m[x])
     for i in range(principi,final):
-        print(i,":",final)
-        if m[x][i][1]=="@" or m[x][i][1]=="X" :
+        print(i,"/",final)
+        if m[x][i][1]=="@" or m[x][i][1]=="X":
             mida+=1
-        elif m[x][i][1]=="~" or i==len(m[x]):
-            return x,y,mida
+        elif m[x][i][1]=="~":
+            break
+        elif i==final:
+            mida+=1
+            break
+    return x,y,mida
 
 def troba1acasellaV(m,x,y):
     principi=x
@@ -179,8 +185,13 @@ def trobaVaixellV(m,x,y):
     for i in range(principi,final):
         if m[i][y][1]=="@" or m[i][y][1]=="X" :
             mida+=1
-        elif m[i][y][1]=="~" or i==len(m[x]):
-            return x,y,mida
+        elif m[i][y][1]=="~":
+            break
+        elif i==final:
+            mida+=1
+            break
+    return x,y,mida
+
 
 def orientacio(m,f,c):
     if c==0 and not aigua(m,f,c+1):
@@ -211,7 +222,6 @@ def tocatIEnfonsat(m,f,c):
         vaixell=trobaVaixellV(m,x,y)
         for i in range (vaixell[0],(vaixell[0]+vaixell[2])):
             if m[i][y][1]=="X":
-                print()
                 tocats+=1
         if tocats==vaixell[2]:
             for i in range (vaixell[0],(vaixell[0]+vaixell[2])):
@@ -228,9 +238,9 @@ def partidaAcabada(m):
                 Quantitat+=1
     return Quantitat==sum(flota)
 
+
 m=creaTauler()
 colocaFlota(m,flota)
-
 while partidaAcabada(m) is not True:
     imprimeixTauler(m)
     print("Coordenades del tret")
@@ -240,5 +250,5 @@ while partidaAcabada(m) is not True:
     f,c=T
     tret(m,f,c)
 imprimeixTauler(m)
-imprimir=("$  "*6)+"\n"+"     GOOD ENDING \n     YOU WON    "+"\n"+("$  "*6)    
+imprimir=("$  "*6)+"\n"+"\tGOOD ENDING \n YOU WON    "+"\n"+("$  "*6)    
 print(imprimir)
