@@ -1,4 +1,7 @@
+#Jordi Olivceda i Kevin Moya
 import random
+
+# Variables Globals
 x = 10
 y = 10
 index="ABCDEFGHIJ"
@@ -6,8 +9,9 @@ flota = [5,4,4,3,3,3,2,2]
 acabada=0
 
 def creaTauler():
+    # Variable local
     m=[]
-    for i in range(x):
+    for i in range(x): # De cada volta mira el valor de x i amb el valor de i afegeix una tupla
         fila=[]
         for j in range(y):
                 fila.append([False,"~"])
@@ -16,14 +20,14 @@ def creaTauler():
 
 def imprimeixTauler(m,dev=False):
     print(" ",end=" ")  
-    for el in index:
+    for el in index: # Passa de cada element les lletres que equivalen a les columnes
         for el2 in el:
             print(el2,end=' ')
     print()
 
-    for i in range(len(m)):
+    for i in range(len(m)): # Mira el rang de la mida de la matriu
         print(i,end=' ')
-        for j in range(len(m[0])):
+        for j in range(len(m[0])): # Mira si imprimeix la posició de la tupla a on està el valor de True o False 
             if m[i][j][0]== False and not dev:
                 print("·",end=' ')
             else:
@@ -31,14 +35,14 @@ def imprimeixTauler(m,dev=False):
         print()
 
 def tradueixIndex(f,c):
-    for i in range(len(index)):
-        if index[i]==c:
+    for i in range(len(index)): # Rang de la mida de les columnes
+        if index[i]==c: # Tradueix l'índex fila/columna
             return int(f),int(i)
 
 def aigua(tauler,fila,columna):
-    return tauler[fila][columna][1]=="~"
+    return tauler[fila][columna][1]=="~" # Comprova si en el tauler, en la fila de la columna en la posició 1 és aigua
 
-def comprovaAreaH(m,f,c,mida):
+def comprovaAreaH(m,f,c,mida): # Comproba el ariea en horitzontal, mirant que no pasi fora del tauler 
     inici=c
     fi=mida
     cops=3
@@ -63,7 +67,7 @@ def comprovaAreaH(m,f,c,mida):
             return True
     return True
 
-def colocaVaixellHoritzontal(m,f,c,mida):
+def colocaVaixellHoritzontal(m,f,c,mida): # Col·loca el vaixell en horitzontal. Si es pot col·locar el vaixell retorna true
     if comprovaAreaH(m,f,c,mida):
       for i in range(c,c+mida):
           m[f][i][1]="@"  
@@ -71,7 +75,7 @@ def colocaVaixellHoritzontal(m,f,c,mida):
         return False
     return True
 
-def comprovaAreaV(m,f,c,mida):
+def comprovaAreaV(m,f,c,mida):  # Comprova l'àrea en vertical, mirant que no passi fora del tauler
     if f+mida>9:
         return False
     if c!=0:
@@ -96,7 +100,7 @@ def comprovaAreaV(m,f,c,mida):
                 return False
     return True
 
-def colocaVaixellVertical(m,f,c,mida):
+def colocaVaixellVertical(m,f,c,mida):  # Col·loca el vaixell en horitzontal. Si es pot col·locar el vaixell retorna true
     if comprovaAreaV(m,f,c,mida):
       for i in range(f,f+mida):
           m[i][c][1]="@"  
@@ -104,19 +108,19 @@ def colocaVaixellVertical(m,f,c,mida):
         return False
     return True
 
-def colocaFlota(m,flota):
+def colocaFlota(m,flota):  # Genera aleatòriament si és horitzontal o vertical amb un booleà
     for el in flota:
         orientacio=random.randint(0,1)
-        if orientacio==1 :
+        if orientacio==1 : # Si el valor booleà és 1, equival a horitzontal
             valit=False
-            while not valit:
+            while not valit: 
                 f=random.randint(0,9)
                 c=random.choice(index)
                 f,c=tradueixIndex(f,c)
-                if aigua(m,f,c):
+                if aigua(m,f,c): # Continuarà el bucle fins que vàlid sigui true
                     valit=colocaVaixellHoritzontal(m,f,c,el)
         
-        elif orientacio==0:
+        elif orientacio==0:  # Si el valor booleà és 0, equival a vertical
             valit=False
             while not valit:
                 f=random.randint(0,9)
@@ -126,12 +130,12 @@ def colocaFlota(m,flota):
                     valit=colocaVaixellVertical(m,f,c,el)
 
 def tret(m,f,c):
-    m[f][c][0]=True
+    m[f][c][0]=True # Mostra el valor que anteriorment era ocult
     if aigua(m,f,c):
         print(8*"~ ","\n     AIGUA    \n"+8*"~ ")    
     else:
         m[f][c][1]="X"
-        if tocatIEnfonsat(m,f,c):
+        if tocatIEnfonsat(m,f,c): # 
             global acabada
             acabada+=1
             print(14*"= ","\n    TOCAT I ENFONSAT   \n"+14*"= ")
@@ -184,10 +188,10 @@ def trobaVaixellV(m,x,y):
             return x,y,mida
     return x,y,mida
 
-def tocatIEnfonsat(m,f,c):
+def tocatIEnfonsat(m,f,c): # Comprova l'orientació del vaixell amb la posició inicial i els voltants del vaixell
     impacte=0
     orientacio= False
-    if c==0 and not aigua(m,f,c+1):
+    if c==0 and not aigua(m,f,c+1): 
         orientacio = True
     elif c==9 and not aigua(m,f,c-1):
         orientacio = True
