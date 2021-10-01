@@ -18,13 +18,13 @@ def white_grey(w,h):
 def white_bw(w,h):
     return("1",[[(255,255,255)]*w]*h)
 
-def format(img):
-    return img[0]
+def format(im):
+    return im[0]
 
 def matrix(img):
     return img[1]
 
-def img(matrix,model='DISCOVER'):
+def im(matrix,model='DISCOVER'):
     bn=False
     gris=False
     for i in matrix:
@@ -41,22 +41,21 @@ def img(matrix,model='DISCOVER'):
     elif bn and gris:
         return "L",matrix
 
-def get_w(img):
-    return len(img[1][0])
+def get_w(im):
+    return len(im[1][0])
 
-def get_h(img):
-    return len(img[1])
+def get_h(im):
+    return len(im[1])
 
-def subimg(img,ow,oh,w,h):
+def subimg(im,ow,oh,w,h):
     total=[]
-    for i in img:
-        for j in i:
-            if i < ow:
-                if j < oh:
-                    total.append(img[i][j])
+    total.append(im[0])
+    for i in range(ow,w):
+        for j in range(oh,h):
+            total.append(im[1][i][j])
+        
     return total
-
 
 matrix=[(255,255,255),(255,255,255),(255,255,255),(255,255,255)]
 
-print(img(matrix))
+print(im(matrix))
