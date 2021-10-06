@@ -9,14 +9,33 @@ def vtrim(img):
     forma exacta els digits. Amb aixo s’aconsegueix que els d ́ıgits de la matricula quedin ben
     “enquadrats” verticalment. Si la imatge nom ́es cont ́e blancs, retorna una imatge nul.
     la."""
-    im=subimg(img)
-    for i in range(len(im)):
+    for i in range(len(img[1])):
         for j in range(len(i)):
+            if img[1][i][j] == (0,0,0):
+
             
 
 def htrim(img):
     """Fa una feina similar a la funci ́o vtrim() per`o en la direcci ́o horitzontal."""
-    
+    for i in range(len(img[1])): 
+        wp = 0
+    for j in range(len(img[1][j])):
+        if img[1][j][i]==(0,0,0):
+            oh = 0
+            ow = j-1
+            #Una vegada que es detecta un píxel negre, fa que la vegada que es detecti una línea completament blanca
+            #Es retalli el caracter
+            detectat = True
+        elif img[1][j][i]==(255,255,255):
+            #White pixel o wp, compta els píxels blancs en una línea
+            wp += 1
+            #Si tota la línea es de píxels blancs, vol dir que el caracter ja ha terminat, així que ho retallem
+            if wp == len(img[1][j]) and detectat:
+                w=j
+                h=len(img[1])
+    if not detectat:
+        return null
+    return subimg(img,ow,oh,w,h)
 
 def scale(src, h):
     """
