@@ -35,7 +35,6 @@ def im(matrix,model='DISCOVER'):
                 gris=True
             else:
                 return "RGB",matrix
-
     if gris:
         return "1",matrix
     elif bn and gris:
@@ -53,7 +52,6 @@ def subimg(im,ow,oh,w,h):
     for i in range(ow,w):
         for j in range(oh,h):
             total.append(im[1][i][j])
-        
     return total
 
 matrix=[(255,255,255),(255,255,255),(255,255,255),(255,255,255)]
