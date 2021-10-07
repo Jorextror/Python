@@ -51,9 +51,17 @@ def subimg(im,ow,oh,w,h):
     total.append(im[0])
     for i in range(ow,w):
         for j in range(oh,h):
-            total.append(im[1][i][j])
+            total.append(im[1][j][i])
     return total
 
-matrix=[(255,255,255),(255,255,255),(255,255,255),(255,255,255)]
+matrix=[[(255,255,255),(255,255,255)],[(255,255,255),(255,255,255)]]
 
-print(im(matrix))
+grey= [[255, 255, 0 ],
+[255, 128, 255],
+[191, 255, 255],
+[255, 255, 0 ],
+[255, 128, 255],
+[191, 255, 255]]
+
+
+print(subimg(grey,1,0,1,5))
