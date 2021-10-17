@@ -18,6 +18,17 @@ def load_patterns(prefix="patro"):
     for i in range(len(content)):
         archiu=content[i].split("_")
         archiu[0]=prefix
+        print(archiu)
+        os.rename(path+"/"+content[i],path+"/"+"_".join(archiu))
+    for i in range(len(content)-1):
+        print(content[i])
+        if content[i].split("_")[1]=="gruixut":
+            try:
+                if content[i].split("_")[2]>content[i+1].split("_")[2]:
+                    content[i],content[i+1]=content[i+1],content[i]
+            except:
+                pass
+    return content
         os.rename(path+"/"+content[i],path+"/"+"_".join(archiu))
     content.sort(key=ordena)
     return content
@@ -61,16 +72,5 @@ def match(img,patlst):
     similituds.sort(key=ordena,reverse=True)
     print(similituds)
     return similituds[0][0]
-        print(archiu)
-        os.rename(path+"/"+content[i],path+"/"+"_".join(archiu))
-    for i in range(len(content)-1):
-        print(content[i])
-        if content[i].split("_")[1]=="gruixut":
-            try:
-                if content[i].split("_")[2]>content[i+1].split("_")[2]:
-                    content[i],content[i+1]=content[i+1],content[i]
-            except:
-                pass
-    return content
 
 print(match(read_bn("2 n\Tasca4.1\sortida\digit_3.jpeg"),load_patterns()))
