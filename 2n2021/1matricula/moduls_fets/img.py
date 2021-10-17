@@ -1,7 +1,10 @@
 """El modul conte les operacions primaries pel treball amb imatges, 
 ja siguin imatges RGB, d’escala de grisos o de blanc i negre. """
 #from typing_extensions import _AnnotatedAlias
-from PIL import Image
+# import PIL
+# from PIL import Image, ImageChops, ImageEnhance, ImageOps
+import Image
+
 
 def null():
     return ("NULL",None)
