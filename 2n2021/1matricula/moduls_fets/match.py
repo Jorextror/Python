@@ -13,7 +13,6 @@ def load_patterns(prefix="patro"):
     dels d ́ıgits i retorna la llista d’imatges corresponent als patrons dels d ́ıgits ordenats de 0 a 9.
     Per exemple, si l’argument  ́es patro voldr`a dir que els arxius dels patrons que s’hauran de
     llegir s’anomenaran: patro_0.jpeg, patro_1.jpeg, . . . , patro_9.jpeg."""   
-
     path="2n2021/1matricula/patrons"
     content = os.listdir(path)
     for i in range(len(content)):
@@ -73,6 +72,5 @@ def match(img,patlst):
     similituds.sort(key=ordena,reverse=True)
     print(similituds)
     return similituds[0][0]
-
 
 print(match(read_bn("2 n\Tasca4.1\sortida\digit_3.jpeg"),load_patterns()))
