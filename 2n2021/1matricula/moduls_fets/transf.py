@@ -11,17 +11,16 @@ def vtrim(img):
     “enquadrats” verticalment. Si la imatge nom ́es cont ́e blancs, retorna una imatge nul.
     la."""
     for i in range(len(img[1])): 
-        detectat=False
         for i in range(len(img[1])): 
               p = 0
         for j in range(len(img[1][j])):
             if img[1][i][j]==(0,0,0):
                 ow = 0
                 oh = p-1
-                detectat = True
+                pixel = True
             elif img[1][i][j]==(255,255,255):
                 i += 1
-                if p == len(img[1][j]) and detectat:
+                if p == len(img[1][j]) and pixel:
                     w=len(img[1][j])
                     h=i
                     return subimg(img,ow,oh,w,h)
