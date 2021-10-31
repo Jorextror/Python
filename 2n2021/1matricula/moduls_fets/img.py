@@ -1,10 +1,6 @@
 """El modul conte les operacions primaries pel treball amb imatges, 
 ja siguin imatges RGB, d’escala de grisos o de blanc i negre. """
-#from typing_extensions import _AnnotatedAlias
-# import PIL
-# from PIL import Image, ImageChops, ImageEnhance, ImageOps
-import Image
-
+import PIL
 
 def null():
     return ("NULL",None)
@@ -24,7 +20,7 @@ def white_bw(w,h):
 def format(im):
     return im[0]
 
-def matrix(img):
+def matrix(im):
     return img[1]
 
 def im(matrix,model='DISCOVER'):
@@ -56,14 +52,3 @@ def subimg(im,ow,oh,w,h):
         for j in range(oh,h):
             total.append(im[1][j][i])
     return total
-
-matrix=[[(255,255,255),(255,255,255)],[(255,255,255),(255,255,255)]]
-
-grey= [[255, 255, 0 ],
-[255, 128, 255],
-[191, 255, 255],
-[255, 255, 0 ],
-[255, 128, 255],
-[191, 255, 255]]
-
-print(subimg(grey,1,0,1,5))

@@ -2,8 +2,7 @@
 funcions s ́on les seg ̈uents:"""
 from PIL import Image as img
 import img 
-from img import subimg
-from imgio import read_bn,show
+import imgio
 
 def vtrim(img):
     """Donada una imatge img en blanc i negre, retorna l’imatge resultant de retallar-la verticalment.
@@ -12,17 +11,16 @@ def vtrim(img):
     “enquadrats” verticalment. Si la imatge nom ́es cont ́e blancs, retorna una imatge nul.
     la."""
     for i in range(len(img[1])): 
-        detectat=False
         for i in range(len(img[1])): 
-            wp = 0
-            for j in range(len(img[1][i])):
-                if img[1][i][j]==0 and not detectat:
-                    detectat = True
-                    ow = 0
-                    oh = i
-                elif img[1][i][j]==255:
-                    wp += 1
-                if wp == len(img[1][j]) and detectat or i==len(img[1])-1 and detectat:
+              p = 0
+        for j in range(len(img[1][j])):
+            if img[1][i][j]==(0,0,0):
+                ow = 0
+                oh = p-1
+                pixel = True
+            elif img[1][i][j]==(255,255,255):
+                i += 1
+                if p == len(img[1][j]) and pixel:
                     w=len(img[1][j])
                     h=i
                     return subimg(img,ow,oh,w,h)
