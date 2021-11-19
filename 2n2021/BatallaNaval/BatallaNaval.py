@@ -1,6 +1,5 @@
 """
 Fes un joc de batalla naval per jugar contra l'ordinador.
-
 Especificacions:
 
 Taulell de 10x10 posicions.
@@ -17,8 +16,7 @@ Cal que puguis jugar diverses partides simultànies (diferents taulells). El jug
 Cal fer-ho amb OOP i, per tant, primer cal definir els objectes i les estructures de dades i decidir com utilitzar-les en el codi principal. 
 Com a mínim, heu d'implementar les següents classes: class Tauler(), class Vaixell() i class Casella()."""
 import random
-
-#OBJECTES------------------------------------------------------
+#OBJECTES-------------------------------------------
 class Tauler:
     def __init__(self,x,y,m):
         self.x=x
@@ -47,11 +45,11 @@ class Casella:
         return [False,"~"]
     def Getlletres(self):
         return self.lletres
-#FUNCIONS-------------------------------------------------------
+#FUNCIONS---------------------------------------------------
 casella = Casella(["A","B","C","D","E","F","G","H","I","J"])
 def creaTauler(x,y):
     return [[Casella.GetCasellaBuida() for j in range(y)] for i in range(x)]
-def imprimeixTauler(lletres,m,dev=True):
+def imprimeixTauler(lletres,m,dev=True):#dev=false no mostrara las pocisiones
     s= " "
     print("  ",end="")  
     for i in range(len(m)):
@@ -264,21 +262,26 @@ def partidaAcabada(flota,m):
     return Quantitat==sum(flota)
 
 def partida(missatges,idioma,flota,m):
-    acabat=False
-    while partidaAcabada(flota,m) is not True or acabat is not True:
-        imprimeixTauler(casella.Getlletres(),m)
-        print(missatges[idioma]["Coordenades"])
-        f=input(missatges[idioma]["Fila"])
-        c=input(missatges[idioma]["Columna"])
-        if f == "quit" or c == "quit":
-            break
-        f,c=tradueixIndex(f,c,casella.Getlletres())
-        tret(idioma,missatges,m,f,c)
+    acabat = False 
+    while acabat is not True:
+        try:
+            imprimeixTauler(casella.Getlletres(),m)
+            print(missatges[idioma]["quit"])
+            print(missatges[idioma]["Coordenades"])
+            f=input(missatges[idioma]["Fila"])
+            c=input(missatges[idioma]["Columna"])
+            if f.lower() == "quit" or c.lower() == "quit":
+                break
+            f,c=tradueixIndex(f,c.upper(),casella.Getlletres())
+            tret(idioma,missatges,m,f,c)
+            acabat=partidaAcabada(flota,m)
+        except:
+            print("Error")
     imprimeixTauler(casella.Getlletres(),m)
-    imprimir=("$  "*6)+"\n"+"\tGOOD ENDING \n YOU WON    "+"\n"+("$  "*6)    
-    print(imprimir)
+    if acabat:    
+        print(("$  "*6)+"\n"+"\tGOOD ENDING \n YOU WON    "+"\n"+("$  "*6))
 if __name__=="__main__":
-    #try:
+    try:
         missatges = {
             "ca": {
                 "benvinguts": "Benviguts a la Batalla Naval!",
@@ -293,9 +296,11 @@ if __name__=="__main__":
                 "avis" : "Per sortir, escriure quit",
                 "escull" : "Escull tauler",
                 "Coordenades":"Coordenades del tret",
-                "Fila":"Fila: ",
-                "Columna":"Columna: ",
+                "Fila":"Fila(0-9): ",
+                "Columna":"Columna(A-J): ",
                 "NoTaulers":"No hi ha taulers creats",
+                "quit":"Quit per Tornar al menú",
+                "victoria":"",
             },
             "es": {
                 "benvinguts": "Bienvenidos a la Batalla Naval!",
@@ -310,9 +315,10 @@ if __name__=="__main__":
                 "avis" : "Para salir, escribir quit",
                 "escull" : "elige tablero",
                 "Coordenades":"Coordenadas del disparo",
-                "Fila":"Fila: ",
-                "Columna":"Columna: ",
+                "Fila":"Fila(0-9): ",
+                "Columna":"Columna(A-J): ",
                 "NoTaulers":"No hay tableros creados",
+                "quit":"Quit para Volver al menú",
             },
             "en": {
                 "benvinguts": "Welcome to Naval Wars!",
@@ -327,9 +333,10 @@ if __name__=="__main__":
                 "avis" : "To go out, write quit",
                 "escull" : "Choose board",
                 "Coordenades":"Shooting coordinates",
-                "Fila":"Row: ",
-                "Columna":"Column: ",
+                "Fila":"Row(0-9): ",
+                "Columna":"Column(A-J): ",
                 "NoTaulers":"No boards created \n ",
+                "quit":"Quit to return to menu",
             },
         }
         partides = []
@@ -338,23 +345,25 @@ if __name__=="__main__":
         idioma=input("Language: (ca,es,en): ")
         print(missatges[idioma]["benvinguts"])
         while acabat is not True:
-            opcio = int(input(missatges[idioma]["menu"]))
-            if opcio == 0:
-                partides.append(Tauler(10,10,[]))
-                tauler=partides[len(partides)-1]
-                tauler.SetTauler(creaTauler(tauler.GetX(),tauler.GetY()))
-                tauler.SetTauler(colocaFlota(tauler.GetTauler(),vaixell.GetFlota(),casella.Getlletres()))
-                partida(missatges,idioma,vaixell.flota,tauler.GetTauler())
-            elif opcio == 1:
-                if partides:
-                    for el in partides:
-                        imprimeixTauler(casella.Getlletres(),el.GetTauler(),dev=False)
-                    tauler = partides[int(input(missatges[idioma]["escull"]+": "))]
-                    partida(vaixell.flota,tauler.GetTauler())
-
-                else:
-                    print(missatges[idioma]["NoTaulers"])
-            elif opcio == 2:
-                acabat=True
-    #except:
-        #print("Error")
+            try:
+                opcio = int(input(missatges[idioma]["menu"]))
+                if opcio == 0:
+                    partides.append(Tauler(10,10,[]))
+                    tauler=partides[len(partides)-1]
+                    tauler.SetTauler(creaTauler(tauler.GetX(),tauler.GetY()))
+                    tauler.SetTauler(colocaFlota(tauler.GetTauler(),vaixell.GetFlota(),casella.Getlletres()))
+                    partida(missatges,idioma,vaixell.flota,tauler.GetTauler())
+                elif opcio == 1:
+                    if partides:
+                        for el in partides:
+                            imprimeixTauler(casella.Getlletres(),el.GetTauler(),dev=False)
+                        tauler = partides[int(input(missatges[idioma]["escull"]+": "))]
+                        partida(missatges,idioma,vaixell.flota,tauler.GetTauler())
+                    else:
+                        print(missatges[idioma]["NoTaulers"])
+                elif opcio == 2:
+                    acabat=True
+            except:
+                print("Error")
+    except:
+        print("Error")
