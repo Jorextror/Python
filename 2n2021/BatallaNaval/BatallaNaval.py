@@ -2,7 +2,7 @@
 
 Fes un joc de batalla naval per jugar contra l'ordinador.
 Especificacions:
-sim
+
 Taulell de 10x10 posicions.
 Hi col·locarem aleatòriament els següents vaixells ( no es poden tocar entre ells):
 1 portaavions de 4 caselles.
