@@ -4,7 +4,7 @@ client=MongoClient()
 #llista de objectos
 mylist=[{"nom":"pepe","equip":1},{"nom":"jony","equip":2}]
 
-with MongoClient('localhost',27017) as client:
+with MongoClient('localhost',27017,username='Jordi',password='Admin@123',authSource='JordiOlivedaBD') as client:
     print("Conectado a MongoDB") #Connectar con el servidor de MongoDB
     db= client.JordiOlivedaBD #database
     col=db["tasca4"] #crear collection
