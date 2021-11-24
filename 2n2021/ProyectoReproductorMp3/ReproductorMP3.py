@@ -1,3 +1,4 @@
+#Joel Farell i Jordi Oliveda
 import os
 
 def Play_Pause():
