@@ -1,3 +1,4 @@
+import time
 class User(object):
     def __init__(self,nom,email):
         self.nick=nom
@@ -11,7 +12,7 @@ class User(object):
         if p not in self.__blocked: #if p.nick not in self.__blocked:
             self.fans[p.nick]=p
         #else:
-        #print("Not allowed")
+            #print("Not allowed")
     def listFans(self):#sin return
         #return self.nick .join([nick for nick in self.fans])
         for p in self.p:
@@ -26,8 +27,63 @@ class User(object):
         else:
             for i in self.__blocked:
                 print(i)
-    
+    def post(self,p):
+        dataActual = time.strftime("%c")
+        hash=[]
+        friend=[]
+        text=""
+        hash_flag=False
+        friend_flag=False
+        text_flag=True
 
+        for letra in p:
+            if letra == "#":
+                hash_flag=True
+                text_flag=False
+            elif letra == "@":
+                friend_flag=True
+                text_flag=False
+
+            if text_flag:
+                text+=letra
+            elif hash_flag:
+                hash_flag=False
+
+
+        post=Post(text,dataActual)
+
+        self.posts.append(post)
+
+
+        #TO FINISH
+    def printPostsDate(self):
+        for post in self.posts:
+            post.show()
+            print()
+
+class Post(object):
+    def __init__(self,text,date):
+        self.content=text
+        self.date=date
+        self.hashtags=[]
+        self.friends=[]
+    def show(self):
+        print("Content --> "+self.content)
+        print("Date--> "+ self.date)
+        if len(self.hashtags)==0:
+            print("No hashtags")
+        else:
+            print(" ".join(self.hashtags))
+        if len(self.friends)==0:
+            print("No friends")
+        else:
+            print(" ".join(self.friends))
+
+    def addHashtag(self,h):
+        self.hashtags+=[h]
+    def addFriend(self,f):
+        self.friends+=[f]
+        
 if __name__=='__main__':
     g=User("pere","pere@daw.com")
     h=User("anna","anna@daw.com")
@@ -41,3 +97,12 @@ if __name__=='__main__':
     g.addFan(k) #3
     g.show() #4
     g.listBlocked() #5
+    # g=User("pere","pere@daw.com")
+    # l=User("maria","maria@daw.com")
+    # g.addFan(l)
+    # g.blockUser(l)
+    # g.post("Next starting project #newproject #newversion #workingcopy @eva @maria @jordina")
+    # g.post("Holidays are comming #finishing_project")
+    # g.post("End of exams @jordi @eva @maria")
+    # g.post("no way")
+    # g.printPostsDate()
