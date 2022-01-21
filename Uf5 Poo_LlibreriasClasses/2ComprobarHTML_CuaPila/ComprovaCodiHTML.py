@@ -52,7 +52,6 @@ class Pila(object):
 html="<html><head><title>Exemple</title></head><body><h1>Hola món</h1></body></html>"
 correcta=True#per cuan es validi mostri error perque falta <
 tancar=True#per saber si esta tancan un tag "/"
-tags=[]#noms dels tags
 
 #print("---- tokenitzar ----")
 ll=tokenitzar(html)
@@ -79,16 +78,13 @@ for j in range(len(c.items)):
             p.desapila()
     elif el != "/" and tancar:#si no es / o abans era una / no entra
         pt.apila(el)
-        tags.append(el)
     elif tancar==False:#si abans era una / entrara
         if pt.esbuida():
             correcta=False
             break
         else:
             tag=pt.desapila()
-            try:
-                tags.remove(el)
-            except:
+            if tag != el:
                 correcta=False
                 break
     elif el == "/":
