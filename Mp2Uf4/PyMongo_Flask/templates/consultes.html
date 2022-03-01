@@ -1,0 +1,55 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Consultes</h2>
+
+    <form action="">
+        <label for="cercar">Cerca:</label>
+        <input type="text" id="myInput" onkeyup="cercar()" placeholder="Search for names.." title="Type in a name">
+    </form>            
+    <br>
+    <div>
+        <div>
+            <h2>Ordenadores</h2>
+            <table>
+                <tr>
+                    <th> Precio </th>
+                    <th> Imagen </th>
+                </tr>
+                {% for i in consulta %}
+                  <tr>
+                    <td> {{i['price']}} </td>
+                    <td> {{i['img']}} </td>
+                  </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+</body>
+<script>
+    function cercar() {
+      var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("myInput");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("myTable");
+      tr = table.getElementsByTagName("tr");
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none"; 
+          }
+        }       
+      }
+    }
+</script>
+</html>
