@@ -1,12 +1,12 @@
 #Joel Farell i Jordi Oliveda
 import os
-directori="/home/joel/Escritorio/python/2n/MP03/Pojecte-UF1"
+#ruta del directori del programa
+directori="/home/joel/Escritorio/python/2n/MP03/Projecte-UF2"
 albums={}
 
 class album:
     def __init__(self,ruta,cançons,genere,any,autor,numero_cops):
         self.ruta,self.cançons,self.genere,self.any,self.autor,self.numero_cops=ruta,cançons,genere,any,autor,numero_cops
-    
     def mostra(self):
         return ",".join((self.ruta,"|".join(self.cançons),self.genere,str(self.any),self.autor,str(self.numero_cops)))
     
@@ -40,8 +40,6 @@ def init_dir():
                     info=f.read()
                     albums[base]=album(base,song,info.split(":")[0],info.split(":")[2],info.split(":")[1],0)#Creem en un diccionari, la clau és la ruta del album per si hi ha dos àlbums iguals. split de ":" perquè està separat amb ":" en info.txt
     with open (directori+"/backups.txt","w") as f:
-        #for key in albums:
-            #print(albums[key].mostra())
         f.writelines(":".join(['{0}:{1}'.format(key,albums[key].mostra()) for key in albums]))#guardem el diccionari
 
 def init():
@@ -52,8 +50,6 @@ def init():
             for i in range(len(list)):
                 if i%2!=0:
                     info=list[i].split(",")
-                    #print(info)
-                    #sleep(5)
                     albums[list[i-1]]=album(info[0],info[1].split("|"),info[2],int(info[3]),info[4],int(info[5]))
     #Mira al fitxer de l'estat que s'ha quedat al tancar el programa
     if ComprovaArchiu(directori+"/estat_reproductor.txt"):
@@ -63,6 +59,7 @@ def init():
                 os.system("mpc add "+directori+'/music/'+info[0])
                 os.system('mpc seek '+info[1].split("(")[1].replace(")",""))
                 os.system("mpc volume 30")
+    return albums
 
 def Play_Pause():
     os.system("mpc toggle")
@@ -79,73 +76,46 @@ def ValumeMas():
 def ValumeMenos():
     os.system("mpc volume -5")
 
-def Editar_albums():
-    print("|".join([el.split("/")[-1] for el in albums.keys()]))#Per mostrar els àlbums fem el split per "/" i mostrem l'última posició de ñes keys que son el path del directori
-    albu=input("Quin album vols editar? ")
-    for key in albums:
-        if key.split("/")[-1].lower()==albu.lower():
-            opcio=int(input("1. Afegir cançons\n2. Eliminar cançons\n"))
-            if opcio==1:
-                path=input("Direcció de cançó a afegir: ")
-                os.system("mv "+path+" "+directori+"albu")
-            elif opcio==2:
-                print("\n".join(albums[key].get_cançons()))
-                cancion=input("Cançó a eliminar: ")
-                llistaSongs=albums[key].get_cançons()
-                if cancion in llistaSongs:
-                    llistaSongs.remove(cancion)
-                    albums[key].set_cançons(llistaSongs)
-                else:
-                    print("Cançó no existent")
-def Reproduir():
-    os.system("ls "+directori+"/playlist")
-    nom=input("Quin vols reproduir?(nom) ")
-    os.system("mpc load "+nom)
-
+#crar llistas de reproducció segons pel que es pasa per parámatre
+#@param tupla on la posicio 0 és el tipus de llista de reproducció i
+#la posició 1 és la caracteristica especifica per la creacio de la llista 
 def crear_llistes(param):
     os.system("mpc clear")
-    if param==1:
-        genero=input("Genere: ")
+    if param[0]=="genere":
         for key in albums:
-            if albums[key].genere.lower() == genero.lower():#filtre per genere
-                print(albums[key].genere.lower()+"\n")
-                print(albums[key].cançons)
+            if albums[key].genere.lower() == param[1].lower():#filtre per genere
                 albums[key].set_numero_cops(albums[key].get_numero_cops()+1)#Actualitza el album, afegint-hi +1 al contador de cops de reproducció
                 for cancion in albums[key].cançons:
                     os.system("mpc add "+key+"/"+cancion)#crea la playlist
-        os.system("mpc save "+genero)
-            
-    elif param==2:
-        autor=input("Autor: ")
+        os.system("mpc save "+param[1])
+    elif param[0]=="autor":
         for key in albums:
-            if albums[key].autor.lower() == autor.lower():
+            if albums[key].autor.lower() == param[1].lower():
                 albums[key].set_numero_cops(albums[key].get_numero_cops()+1)
                 for cancion in albums[key].cançons:
                     os.system("mpc add "+albums[key].ruta+"/"+cancion)
-        os.system("mpc save "+autor)
+        os.system("mpc save "+param[1])
             
-    elif param==3:
-        anys=input("Anys: ")
+    elif param[0]=="anys":
         for key in albums:
-            if int(albums[key].any) >= int(anys.split(" ")[0]) and int(albums[key].any) <= int(anys.split(" ")[1]):
+            if int(albums[key].any) >= int(param[1][0]) and int(albums[key].any) <= int(param[1][1]):
                 albums[key].set_numero_cops(albums[key].get_numero_cops()+1)
                 for cancion in albums[key].cançons:
                     os.system("mpc add "+albums[key].ruta+"/"+cancion)
-        os.system("mpc save "+"_".join(anys.split(" ")))
+        os.system("mpc save "+"_".join(param[1]))
     
-    elif param==4:
-        cops=input("Cops: ")
+    elif param[0]=="cops":
+        cops=param
         for key in albums:
-            if int(albums[key].numero_cops) >= int(cops.split(" ")[0]) and int(albums[key].numero_cops) <= int(cops.split(" ")[1]):
+            if int(albums[key].numero_cops) >= int(cops[1][0]) and int(albums[key].numero_cops) <= int(cops[1][1    ]):
                 for cancion in albums[key].cançons:
                     os.system("mpc add "+albums[key].ruta+"/"+cancion)
-        os.system("mpc save "+"_".join(cops.split(" ")))
+        os.system("mpc save "+"_".join(cops[1]))
     else:
         print("no existeix la opcio")
 
 def sortir():
     text="mpc status"+' > '+directori+"/estat_reproductor.txt"
-    os.system(text)
     init_dir()
     
 def reset():
@@ -154,3 +124,16 @@ def reset():
     os.system("/etc/init.d/mpd restart")
     os.system("mpc update")
     init()
+
+#pasem el path origen de la canço i al desti amb el cp ho copiem
+def aggregate(path,path_album):
+    os.system("cp "+path+" "+path_album)
+
+#pasem el path de la canço per eliminar-lo
+def deleteSong(path):
+    os.system("rm "+path)
+    
+#rerodueix la lista de cançons pasades per parámetre
+def carrega(list):
+    print(list)
+    os.system("mpc load "+list)
