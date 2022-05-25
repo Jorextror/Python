@@ -1,0 +1,19 @@
+{% load bootstrap5 %}
+{%  bootstrap_css %}
+
+<br>
+<a href="/posts"><</a>
+<h1>{{ post.title }}</h1>
+<h3>{{post.content}}</h3>
+
+<form action="{% url 'vote' post.id %}" class="form" method="post">
+    {% csrf_token %}
+    
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+        {% for valoration in post.valoration_set.all %}
+            <input type="radio" name="valoration" id="valoration{{ forloop.counter }}" value="{{ valoration.id }}">
+            <label for="valoration{{ forloop.counter }}">{{ valoration.valoration }}</label><br>
+        {% endfor %}
+    <input type="submit" value="Vote" class="btn btn-primary">
+    </form>
+

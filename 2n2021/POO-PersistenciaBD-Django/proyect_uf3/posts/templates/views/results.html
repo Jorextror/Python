@@ -1,0 +1,16 @@
+{% load bootstrap5 %}
+{%  bootstrap_css %}
+
+<a href="/posts"><</a>
+<ul>
+    {% for post in latest_posts_list %}
+        <li><a href="{% url 'detail' post.id %}">{{ post.title }}</a></li>
+        <ul>
+            {% for valoration in post.valoration_set.all %}
+                <li>{{ valoration.valoration }} : {{ valoration.votes }} vote{{ valoration.votes|pluralize }}</li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+</ul>
+
+
