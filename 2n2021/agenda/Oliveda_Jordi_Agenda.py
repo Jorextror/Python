@@ -32,7 +32,7 @@ class Client:
 # - els mètodes d'impressió de dades: un per a cada atribut
     def retornaNom(self):  
         return self.nom
-    def retornaCognoms(self):  
+    def retornaCognoms(self):
         return self.cognoms
     def retornaData_naixement(self):  
         return self.data_naixement
