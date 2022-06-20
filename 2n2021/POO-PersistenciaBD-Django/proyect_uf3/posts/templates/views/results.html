@@ -1,14 +1,24 @@
 {% load bootstrap5 %}
 {%  bootstrap_css %}
 
-<a href="/posts"><</a>
-<ul>
+<nav class="navbar navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/posts"> <small>Posts</small></a>
+      <a class="navbar-brand" href="/posts/results"> <small>Resultats</small></a>
+    </div>
+</nav>
+
+<ul class="list-group container">
     {% for post in latest_posts_list %}
-        <li><a href="{% url 'detail' post.id %}">{{ post.title }}</a></li>
-        <ul>
+        <li class="list-group-item"><a href="{% url 'detail' post.id %}">{{ post.title }}</a></li>
+        <ul class="list-group">
             {% for valoration in post.valoration_set.all %}
-                <li>{{ valoration.valoration }} : {{ valoration.votes }} vote{{ valoration.votes|pluralize }}</li>
+                <li class="list-group-item">{{ valoration.valoration }} : {{ valoration.votes }} vote{{ valoration.votes|pluralize }}</li>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: {{ valoration.votes }}%"></div>
+                </div>
             {% endfor %}
+            <br> 
         </ul>
     {% endfor %}
 </ul>

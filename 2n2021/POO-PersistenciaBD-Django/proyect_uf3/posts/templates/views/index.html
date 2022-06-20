@@ -1,13 +1,21 @@
 {% load bootstrap5 %}
 {%  bootstrap_css %}
 
-<a href="/posts/results">results</a>
-{% if  latest_posts_list %}
-    <ul>
-    {% for post in latest_posts_list %}
-        <li><a href="{% url 'detail' post.id %}">{{ post.title }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No posts are available.</p>
-{% endif %}
+<nav class="navbar navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/posts"> <small>Posts</small></a>
+      <a class="navbar-brand" href="/posts/results"> <small>Resultats</small></a>
+    </div>
+</nav>
+
+<div class="container">
+    {% if  latest_posts_list %}
+        <ul class="list-group">
+        {% for post in latest_posts_list %}
+            <li  class="list-group-item"><a href="{% url 'detail' post.id %}">{{ post.title }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No posts are available.</p>
+    {% endif %}
+</div>
